@@ -21,8 +21,7 @@ class ScraperService:
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=2, max=10),
         reraise=True,
-    )
-
+        )
     async def fetch(self, url: str) -> str:
         logger.info(f"Scraping: {url}")
         try:

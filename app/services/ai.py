@@ -28,6 +28,7 @@ class AIService:
 
         if source_type == "url":
             prompt = f'''This is the text of the article: {text}. 
+            Answer in this language: {language}.
             Build an interactive knowledge graph based on the content of this article. 
             The graph should have {depth} layers of connections. 
             Mark important nodes such as core concepts, formulas, translations, facts, etc. 
@@ -44,6 +45,7 @@ class AIService:
 
         else:
             prompt = f'''This is the term {text}. 
+            Answer in this language: {language}.
             Build an interactive knowledge graph based on the content of this term and closely related concepts with no more than {temperature * 100:.0f}% off main topic. 
             The graph should have {depth} layers of connections. 
             Mark important nodes such as core concepts, formulas, translations, facts, etc. 
@@ -61,4 +63,22 @@ class AIService:
             model=self.model,
             contents=prompt,
         )
-        return self._parse_json(response.text)
+        return self._parse_json(response.text) #type: ignore
+    
+
+    async def expand_node(self, topic: str, node_id: str, label: str, definition: str) -> dict:
+        prompt = f'''Expand the node "{label}" in the knowledge graph about "{topic}".
+        Node definition: {definition}
+        
+        Generate new child nodes and edges that go deeper into this concept.
+        Return ONLY valid JSON, no markdown, no explanations, strictly this structure:
+        {{
+            "new_nodes": [{{"id": "...", "label": "...", "definition": "...", "importance": "major|minor", "examples": [], "notes": [], "tags": []}}],
+            "new_edges": [{{"source": "{node_id}", "target": "...", "relation": "...", "weight": 0.7}}]
+        }}'''
+
+        response = await self.client.aio.models.generate_content(
+            model=self.model,
+            contents=prompt,
+        )
+        return self._parse_json(response.text) #type: ignore
