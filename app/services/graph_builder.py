@@ -26,7 +26,7 @@ class GraphBuilder:
     
     async def build(self, text, language, depth, source_type) -> GraphResponse:
         session_id = str(uuid.uuid4())
-        logger.info(f"Building graph for session {session_id} with text: {text}, language: {language}, depth: {depth}, source_type: {source_type}")
+        logger.info(f"Building graph | session={session_id} | source={source_type} | lang={language} | depth={depth}")
         graph = await self.ai.build_graph(text, language, depth, source_type)
         self.sessions[session_id] = graph
         return GraphResponse(session_id=session_id, topic = graph.get("topic", text[:80]), nodes = self._build_nodes(graph), edges = self._build_edges(graph), meta = {"source_type": source_type})
