@@ -10,7 +10,7 @@ from app.services.rag import RAGService
 from app.schemas.graph import GraphRequest, GraphResponse
 
 
-router = APIRouter(prefix="/graph", tags=["graph"])
+router = APIRouter(prefix="/api/graph", tags=["graph"])
 
 
 async def build_stream(request: GraphRequest, builder: GraphBuilder, scraper: ScraperService, rag: RAGService):
@@ -64,7 +64,9 @@ async def build_graph(
 
 @router.get("/{session_id}", response_model=GraphResponse)
 async def get_graph(
-    session_id: str,
-    builder: GraphBuilder = Depends(get_graph_builder),
-) -> GraphResponse:
-    return GraphResponse(**builder.get_session(session_id))
+        session_id: str,
+        builder: GraphBuilder = Depends(get_graph_builder),
+    ) -> GraphResponse:
+    session = builder.get_session(session_id)
+    session["session_id"] = session_id
+    return GraphResponse(**session)

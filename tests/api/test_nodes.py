@@ -43,7 +43,7 @@ def mock_dependencies():
 
 def test_get_node_info(client, mock_dependencies):
     """Test getting node information"""
-    from app.schemas.node import NodeDetailResponse
+    from app.schemas.nodes import NodeDetailResponse
     
     # Setup proper response
     node_response = NodeDetailResponse(

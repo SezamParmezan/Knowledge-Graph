@@ -665,7 +665,7 @@ async function submitForm(data) {
     progressBar.style.width = '5%';
 
     try {
-        const response = await fetch('/graph/build', {
+        const response = await fetch('/api/graph/build', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)

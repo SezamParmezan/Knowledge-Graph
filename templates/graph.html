@@ -11,250 +11,125 @@
     <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
     <style>
         * { box-sizing: border-box; }
+        body { font-family: 'Outfit', sans-serif; background: #f0f4ff; overflow: hidden; height: 100vh; }
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: #f0f4ff;
-            overflow: hidden;
-            height: 100vh;
-        }
-
-        /* ── Mesh background ── */
         .mesh-bg {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
             background:
                 radial-gradient(ellipse 80% 60% at 10% 10%, rgba(147,197,253,0.35) 0%, transparent 60%),
                 radial-gradient(ellipse 60% 50% at 90% 20%, rgba(196,181,253,0.28) 0%, transparent 55%),
                 radial-gradient(ellipse 70% 60% at 50% 95%, rgba(167,243,208,0.2) 0%, transparent 60%),
                 linear-gradient(160deg, #e8f0fe 0%, #f0f4ff 40%, #f5f3ff 70%, #ecfdf5 100%);
-            pointer-events: none;
         }
-
-        .blob {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(70px);
-            opacity: 0.2;
-            pointer-events: none;
-            animation: blobFloat 14s ease-in-out infinite;
-        }
+        .blob { position: fixed; border-radius: 50%; filter: blur(70px); opacity: 0.2; pointer-events: none; animation: blobFloat 14s ease-in-out infinite; }
         .blob-1 { width: 600px; height: 600px; background: #93c5fd; top: -150px; left: -150px; }
         .blob-2 { width: 400px; height: 400px; background: #c4b5fd; bottom: -100px; right: -100px; animation-delay: -5s; }
         .blob-3 { width: 300px; height: 300px; background: #6ee7b7; top: 40%; left: 40%; animation-delay: -9s; }
-
         @keyframes blobFloat {
             0%, 100% { transform: translate(0,0) scale(1); }
             33% { transform: translate(20px,-15px) scale(1.04); }
             66% { transform: translate(-15px,10px) scale(0.97); }
         }
 
-        /* ── Glass ── */
         .glass {
-            background: rgba(255,255,255,0.78);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255,255,255,0.78); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.9);
             box-shadow: 0 4px 24px rgba(99,102,241,0.07), 0 1px 4px rgba(0,0,0,0.04);
         }
-
         .glass-nav {
-            background: rgba(255,255,255,0.88);
-            backdrop-filter: blur(24px);
+            background: rgba(255,255,255,0.88); backdrop-filter: blur(24px);
             border-bottom: 1px solid rgba(255,255,255,0.9);
             box-shadow: 0 1px 20px rgba(99,102,241,0.07);
         }
 
-        /* ── Gradient ── */
-        .gradient-text {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #2563eb 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
         .btn-primary {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: white;
-            transition: all 0.2s ease;
-            box-shadow: 0 3px 12px rgba(79,70,229,0.3);
-            border: none;
-            cursor: pointer;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;
+            transition: all 0.2s ease; box-shadow: 0 3px 12px rgba(79,70,229,0.3);
+            border: none; cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 600;
         }
         .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(79,70,229,0.4); }
         .btn-primary:active { transform: translateY(0); }
         .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
         .btn-secondary {
-            background: rgba(255,255,255,0.8);
-            border: 1.5px solid rgba(203,213,225,0.8);
-            color: #475569;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 500;
+            background: rgba(255,255,255,0.8); border: 1.5px solid rgba(203,213,225,0.8);
+            color: #475569; transition: all 0.2s ease; cursor: pointer;
+            font-family: 'Outfit', sans-serif; font-weight: 500;
         }
         .btn-secondary:hover { background: white; border-color: #6366f1; color: #4f46e5; }
 
-        /* ── Graph canvas ── */
-        #graph-container {
-            background: transparent;
-        }
-
-        .node-circle {
-            cursor: pointer;
-            transition: filter 0.2s;
-        }
+        .node-circle { cursor: pointer; transition: filter 0.2s; }
         .node-circle:hover { filter: brightness(1.15) drop-shadow(0 0 10px rgba(99,102,241,0.5)); }
-        .node-circle.selected { filter: brightness(1.1) drop-shadow(0 0 16px rgba(99,102,241,0.7)); }
+        .node-circle.selected { filter: brightness(1.1) drop-shadow(0 0 16px rgba(99,102,241,0.8)); }
 
-        .graph-link {
-            stroke: rgba(148,163,184,0.5);
-            stroke-width: 1.5;
-            transition: stroke 0.2s, stroke-opacity 0.2s;
-        }
+        .graph-link { stroke: rgba(148,163,184,0.45); stroke-width: 1.5; transition: stroke 0.2s; }
         .graph-link.related { stroke: rgba(99,102,241,0.7); stroke-width: 2.5; }
 
         .node-label {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
-            text-anchor: middle;
-            pointer-events: none;
-            fill: white;
+            font-family: 'Outfit', sans-serif; font-weight: 600;
+            text-anchor: middle; pointer-events: none; fill: white;
         }
 
-        /* ── Sidebar ── */
-        #sidebar {
-            width: 360px;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
-        }
+        #sidebar { width: 360px; flex-shrink: 0; display: flex; flex-direction: column; }
 
-        /* ── Node badge ── */
         .importance-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 3px 10px;
-            border-radius: 100px;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+            display: inline-flex; align-items: center; padding: 3px 10px;
+            border-radius: 100px; font-size: 11px; font-weight: 600;
+            letter-spacing: 0.5px; text-transform: uppercase;
         }
         .importance-core { background: rgba(79,70,229,0.1); color: #4f46e5; }
         .importance-major { background: rgba(124,58,237,0.1); color: #7c3aed; }
         .importance-minor { background: rgba(100,116,139,0.1); color: #64748b; }
 
-        /* ── Chat ── */
         .chat-msg {
-            animation: fadeUp 0.3s ease both;
-            border-radius: 12px;
-            padding: 10px 14px;
-            font-size: 14px;
-            line-height: 1.5;
-            max-width: 90%;
+            animation: fadeUp 0.3s ease both; border-radius: 12px;
+            padding: 10px 14px; font-size: 14px; line-height: 1.5; max-width: 90%;
         }
         .chat-msg-user {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: white;
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;
+            margin-left: auto; border-bottom-right-radius: 4px;
         }
         .chat-msg-assistant {
-            background: rgba(241,245,249,0.9);
-            color: #1e293b;
-            border: 1px solid rgba(203,213,225,0.6);
-            border-bottom-left-radius: 4px;
+            background: rgba(241,245,249,0.9); color: #1e293b;
+            border: 1px solid rgba(203,213,225,0.6); border-bottom-left-radius: 4px;
         }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ── Tooltip ── */
         .tooltip {
-            position: fixed;
-            padding: 8px 12px;
-            background: rgba(15,23,42,0.92);
-            backdrop-filter: blur(8px);
-            color: white;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 500;
-            font-family: 'Outfit', sans-serif;
-            pointer-events: none;
-            max-width: 200px;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.15s ease;
+            position: fixed; padding: 8px 12px; background: rgba(15,23,42,0.92);
+            backdrop-filter: blur(8px); color: white; border-radius: 8px; font-size: 12px;
+            font-weight: 500; font-family: 'Outfit', sans-serif; pointer-events: none;
+            max-width: 220px; z-index: 1000; opacity: 0; transition: opacity 0.15s ease;
             border: 1px solid rgba(255,255,255,0.1);
         }
         .tooltip.show { opacity: 1; }
 
-        /* ── Tag ── */
         .tag {
-            display: inline-flex;
-            padding: 2px 8px;
-            background: rgba(99,102,241,0.08);
-            border: 1px solid rgba(99,102,241,0.15);
-            border-radius: 100px;
-            font-size: 11px;
-            color: #6366f1;
-            font-weight: 500;
+            display: inline-flex; padding: 2px 8px;
+            background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.15);
+            border-radius: 100px; font-size: 11px; color: #6366f1; font-weight: 500;
         }
 
-        /* ── Input ── */
         .chat-input {
-            font-family: 'Outfit', sans-serif;
-            background: rgba(255,255,255,0.8);
-            border: 1.5px solid rgba(203,213,225,0.7);
-            border-radius: 12px;
-            padding: 10px 14px;
-            font-size: 14px;
-            color: #1e293b;
-            transition: all 0.2s;
-            outline: none;
+            font-family: 'Outfit', sans-serif; background: rgba(255,255,255,0.8);
+            border: 1.5px solid rgba(203,213,225,0.7); border-radius: 12px;
+            padding: 10px 14px; font-size: 14px; color: #1e293b;
+            transition: all 0.2s; outline: none;
         }
-        .chat-input:focus {
-            border-color: #6366f1;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
-        }
+        .chat-input:focus { border-color: #6366f1; background: white; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
         .chat-input:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* ── Scrollbar ── */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.4); border-radius: 4px; }
 
-        /* ── Loading ── */
-        .loading-dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            animation: loadBounce 1.2s ease-in-out infinite;
-        }
+        .loading-dot { width: 8px; height: 8px; border-radius: 50%; animation: loadBounce 1.2s ease-in-out infinite; }
         @keyframes loadBounce {
             0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
             40% { transform: scale(1); opacity: 1; }
         }
 
-        /* ── Legend ── */
-        .legend-dot {
-            width: 10px; height: 10px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        /* Node importance colors */
-        .color-core { fill: #4f46e5; }
-        .color-major { fill: #7c3aed; }
-        .color-minor { fill: #94a3b8; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
     </style>
 </head>
 <body>
@@ -274,26 +149,14 @@
             </svg>
             Back
         </a>
-
         <div class="flex-1 text-center">
-            <h1 id="graphTitle" class="text-lg font-bold text-slate-800 truncate" style="font-family:'DM Serif Display',serif;">
-                Knowledge Graph
-            </h1>
+            <h1 id="graphTitle" class="text-lg font-bold text-slate-800 truncate" style="font-family:'DM Serif Display',serif;">Knowledge Graph</h1>
         </div>
-
-        <!-- Legend -->
         <div class="hidden sm:flex items-center gap-4 text-xs text-slate-500 font-medium">
-            <div class="flex items-center gap-1.5">
-                <div class="legend-dot" style="background:#4f46e5;"></div> Core
-            </div>
-            <div class="flex items-center gap-1.5">
-                <div class="legend-dot" style="background:#7c3aed;"></div> Major
-            </div>
-            <div class="flex items-center gap-1.5">
-                <div class="legend-dot" style="background:#94a3b8;"></div> Minor
-            </div>
+            <div class="flex items-center gap-1.5"><div class="legend-dot" style="background:#4f46e5;"></div> Core</div>
+            <div class="flex items-center gap-1.5"><div class="legend-dot" style="background:#7c3aed;"></div> Major</div>
+            <div class="flex items-center gap-1.5"><div class="legend-dot" style="background:#94a3b8;"></div> Minor</div>
         </div>
-
         <button id="resetView" class="btn-secondary flex items-center gap-2 px-4 py-2 rounded-xl text-sm">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -308,8 +171,6 @@
         <!-- Graph -->
         <div id="graph-container" class="flex-1 relative overflow-hidden">
             <svg id="graph" class="w-full h-full"></svg>
-
-            <!-- Loading overlay -->
             <div id="loadingOverlay" class="absolute inset-0 flex items-center justify-center">
                 <div class="glass rounded-2xl px-10 py-8 text-center">
                     <div class="flex justify-center gap-2 mb-4">
@@ -324,76 +185,49 @@
 
         <!-- Sidebar -->
         <aside id="sidebar" class="glass border-l border-white/60 hidden">
-
-            <!-- Node details -->
             <div class="flex-shrink-0 border-b border-slate-100 p-5">
                 <div id="nodeEmpty" class="text-center py-6">
                     <div class="text-3xl mb-3">🕸️</div>
                     <p class="text-slate-400 text-sm">Click any node to explore it</p>
                 </div>
-
                 <div id="nodeContent" class="hidden space-y-3">
-                    <div class="flex items-start gap-2">
-                        <span class="importance-badge importance-core" id="nodeBadge">Core</span>
-                    </div>
+                    <span class="importance-badge importance-core" id="nodeBadge">Core</span>
                     <h2 class="text-xl font-bold text-slate-800" id="nodeLabel" style="font-family:'DM Serif Display',serif;"></h2>
                     <p class="text-slate-500 text-sm leading-relaxed" id="nodeDefinition"></p>
-
-                    <!-- Examples -->
                     <div id="examplesWrap" class="hidden">
                         <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1.5">Examples</p>
                         <ul class="space-y-1" id="nodeExamples"></ul>
                     </div>
-
-                    <!-- Notes -->
                     <div id="notesWrap" class="hidden">
                         <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1.5">Notes</p>
                         <ul class="space-y-1" id="nodeNotes"></ul>
                     </div>
-
-                    <!-- Tags -->
                     <div class="flex flex-wrap gap-1.5" id="nodeTags"></div>
-
-                    <!-- Actions -->
                     <div class="flex gap-2 pt-1">
                         <button id="expandBtn" class="btn-primary flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/>
-                            </svg>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/></svg>
                             Expand
                         </button>
                         <button id="askBtn" class="btn-secondary flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm border">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             Ask
                         </button>
                     </div>
                 </div>
             </div>
-
-            <!-- Chat -->
             <div class="flex-1 flex flex-col overflow-hidden">
                 <div class="px-5 py-3 border-b border-slate-100 flex items-center gap-2">
                     <span class="text-sm font-semibold text-slate-600">Chat</span>
                     <span class="text-xs text-slate-400" id="chatContext"></span>
                 </div>
-
                 <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3">
-                    <div class="chat-msg chat-msg-assistant">
-                        👋 Hi! Ask me anything about this topic, or click a node to explore it.
-                    </div>
+                    <div class="chat-msg chat-msg-assistant">👋 Hi! Ask me anything about this topic, or click a node to explore it.</div>
                 </div>
-
                 <div class="flex-shrink-0 p-4 border-t border-slate-100 bg-white/40">
                     <form id="chatForm" class="flex gap-2">
-                        <input type="text" id="chatInput" placeholder="Ask a question…"
-                            class="chat-input flex-1" disabled/>
-                        <button type="submit" id="chatSendBtn"
-                            class="btn-primary w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" disabled>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                            </svg>
+                        <input type="text" id="chatInput" placeholder="Ask a question…" class="chat-input flex-1" disabled/>
+                        <button type="submit" id="chatSendBtn" class="btn-primary w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" disabled>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                         </button>
                     </form>
                 </div>
@@ -402,25 +236,21 @@
     </div>
 </div>
 
-<!-- Tooltip -->
 <div id="tooltip" class="tooltip"></div>
 
 <script>
 const sessionId = window.location.pathname.split('/').pop();
 let graphData = null;
 let selectedNodeId = null;
-let svgRef = null;
-let zoomRef = null;
 
 const sidebar = document.getElementById('sidebar');
 const chatInput = document.getElementById('chatInput');
 const chatSendBtn = document.getElementById('chatSendBtn');
 const chatMessages = document.getElementById('chatMessages');
 
-// ── Load graph ──
 async function loadGraphData() {
     try {
-        const res = await fetch(`/graph/${sessionId}`);
+        const res = await fetch(`/api/graph/${sessionId}`);
         graphData = await res.json();
         document.getElementById('graphTitle').textContent = graphData.topic || 'Knowledge Graph';
         document.getElementById('loadingOverlay').classList.add('hidden');
@@ -433,7 +263,6 @@ async function loadGraphData() {
     }
 }
 
-// ── Render D3 graph ──
 function renderGraph() {
     if (!graphData?.nodes) return;
 
@@ -444,9 +273,7 @@ function renderGraph() {
     const svg = d3.select('#graph').attr('width', W).attr('height', H);
     svg.selectAll('*').remove();
 
-    // Defs — gradients + glow
     const defs = svg.append('defs');
-
     const colors = { core: '#4f46e5', major: '#7c3aed', minor: '#94a3b8' };
 
     // Glow filter
@@ -456,51 +283,39 @@ function renderGraph() {
     merge.append('feMergeNode').attr('in', 'blur');
     merge.append('feMergeNode').attr('in', 'SourceGraphic');
 
-    // Gradient for each importance
+    // Gradients
     Object.entries(colors).forEach(([key, color]) => {
-        const g = defs.append('radialGradient').attr('id', `grad-${key}`).attr('cx','40%').attr('cy','35%').attr('r','60%');
-        g.append('stop').attr('offset','0%').attr('stop-color', d3.color(color).brighter(0.6));
-        g.append('stop').attr('offset','100%').attr('stop-color', color);
+        const grad = defs.append('radialGradient').attr('id', `grad-${key}`).attr('cx','40%').attr('cy','35%').attr('r','60%');
+        grad.append('stop').attr('offset','0%').attr('stop-color', d3.color(color).brighter(0.6));
+        grad.append('stop').attr('offset','100%').attr('stop-color', color);
     });
 
     const g = svg.append('g');
+    const radius = { core: 36, major: 28, minor: 20 };
 
-    // Node radius by importance
-    const radius = { core: 32, major: 24, minor: 17 };
-
-    // Simulation
     const sim = d3.forceSimulation(graphData.nodes)
         .force('link', d3.forceLink(graphData.edges).id(d => d.id).distance(d => {
-            const imp = d.source.importance || 'minor';
-            return imp === 'core' ? 140 : 100;
+            return (d.source.importance === 'core' || d.target.importance === 'core') ? 150 : 110;
         }))
-        .force('charge', d3.forceManyBody().strength(-400))
+        .force('charge', d3.forceManyBody().strength(-500))
         .force('center', d3.forceCenter(W / 2, H / 2))
-        .force('collision', d3.forceCollide().radius(d => radius[d.importance] + 10 || 30));
+        .force('collision', d3.forceCollide().radius(d => (radius[d.importance] || 20) + 14));
 
     // Links
     const link = g.selectAll('.graph-link')
-        .data(graphData.edges)
-        .enter().append('line')
-        .attr('class', 'graph-link');
+        .data(graphData.edges).enter().append('line').attr('class', 'graph-link');
 
     // Edge labels
     const edgeLabel = g.selectAll('.edge-label')
-        .data(graphData.edges)
-        .enter().append('text')
-        .attr('class', 'edge-label')
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '9px')
+        .data(graphData.edges).enter().append('text')
+        .attr('text-anchor', 'middle').attr('font-size', '8px')
         .attr('font-family', 'Outfit, sans-serif')
-        .attr('fill', 'rgba(100,116,139,0.6)')
-        .attr('pointer-events', 'none')
+        .attr('fill', 'rgba(100,116,139,0.55)').attr('pointer-events', 'none')
         .text(d => d.relation || '');
 
-    // Node groups
+    // Nodes
     const nodeG = g.selectAll('.node-g')
-        .data(graphData.nodes)
-        .enter().append('g')
-        .attr('class', 'node-g')
+        .data(graphData.nodes).enter().append('g').attr('class', 'node-g')
         .style('cursor', 'pointer')
         .on('click', (e, d) => { e.stopPropagation(); selectNode(d); })
         .on('mouseover', (e, d) => showTooltip(e, d.label))
@@ -509,37 +324,70 @@ function renderGraph() {
 
     nodeG.append('circle')
         .attr('class', 'node-circle')
-        .attr('r', d => radius[d.importance] || 20)
+        .attr('r', d => radius[d.importance] || 22)
         .attr('fill', d => `url(#grad-${d.importance || 'minor'})`)
-        .attr('stroke', 'rgba(255,255,255,0.6)')
-        .attr('stroke-width', 2);
+        .attr('stroke', 'rgba(255,255,255,0.6)').attr('stroke-width', 2)
+        .attr('filter', 'url(#glow)');
+
+    // Two-line labels
+    nodeG.append('text')
+        .attr('class', 'node-label')
+        .attr('dy', d => {
+            const words = d.label.split(' ');
+            return words.length > 1 ? '-0.25em' : '0.35em';
+        })
+        .attr('font-size', d => d.importance === 'core' ? '11px' : d.importance === 'major' ? '10px' : '9px')
+        .text(d => d.label.split(' ')[0].slice(0, 13));
 
     nodeG.append('text')
         .attr('class', 'node-label')
-        .attr('dy', '0.35em')
-        .attr('font-size', d => d.importance === 'core' ? '12px' : d.importance === 'major' ? '10px' : '9px')
-        .text(d => d.label.length > 14 ? d.label.slice(0, 13) + '…' : d.label);
+        .attr('dy', '1em')
+        .attr('font-size', d => d.importance === 'core' ? '10px' : '8px')
+        .attr('opacity', 0.9)
+        .text(d => {
+            const words = d.label.split(' ');
+            if (words.length < 2) return '';
+            return words.slice(1).join(' ').slice(0, 13);
+        });
 
     sim.on('tick', () => {
         link
             .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
             .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
-
         edgeLabel
             .attr('x', d => (d.source.x + d.target.x) / 2)
             .attr('y', d => (d.source.y + d.target.y) / 2);
-
         nodeG.attr('transform', d => `translate(${d.x},${d.y})`);
     });
 
     // Zoom
-    const zoom = d3.zoom().scaleExtent([0.3, 3]).on('zoom', e => g.attr('transform', e.transform));
+    const zoom = d3.zoom().scaleExtent([0.2, 4]).on('zoom', e => g.attr('transform', e.transform));
     svg.call(zoom);
-    svgRef = svg;
-    zoomRef = zoom;
+
+    // Auto-fit after simulation settles
+    sim.on('end', () => {
+        const bounds = g.node().getBBox();
+        if (!bounds.width || !bounds.height) return;
+        const padding = 60;
+        const scale = Math.min(
+            (W - padding * 2) / bounds.width,
+            (H - padding * 2) / bounds.height,
+            1.2
+        );
+        const tx = (W - bounds.width * scale) / 2 - bounds.x * scale;
+        const ty = (H - bounds.height * scale) / 2 - bounds.y * scale;
+        svg.transition().duration(600)
+            .call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
+    });
 
     document.getElementById('resetView').onclick = () => {
-        svg.transition().duration(600).call(zoom.transform, d3.zoomIdentity.translate(W/2, H/2).scale(0.9).translate(-W/2, -H/2));
+        const bounds = g.node().getBBox();
+        if (!bounds.width) return;
+        const padding = 60;
+        const scale = Math.min((W - padding * 2) / bounds.width, (H - padding * 2) / bounds.height, 1.2);
+        const tx = (W - bounds.width * scale) / 2 - bounds.x * scale;
+        const ty = (H - bounds.height * scale) / 2 - bounds.y * scale;
+        svg.transition().duration(600).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
     };
 
     svg.on('click', () => deselectNode());
@@ -552,11 +400,8 @@ function drag(sim) {
         .on('end', (e, d) => { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; });
 }
 
-// ── Select node ──
 function selectNode(node) {
     selectedNodeId = node.id;
-
-    // Update panel
     document.getElementById('nodeEmpty').classList.add('hidden');
     document.getElementById('nodeContent').classList.remove('hidden');
     document.getElementById('nodeLabel').textContent = node.label;
@@ -566,31 +411,25 @@ function selectNode(node) {
     badge.textContent = node.importance || 'minor';
     badge.className = `importance-badge importance-${node.importance || 'minor'}`;
 
-    // Examples
     const exWrap = document.getElementById('examplesWrap');
-    const exList = document.getElementById('nodeExamples');
     if (node.examples?.length) {
-        exList.innerHTML = node.examples.map(e => `<li class="text-sm text-slate-500 flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>${e}</li>`).join('');
+        document.getElementById('nodeExamples').innerHTML =
+            node.examples.map(e => `<li class="text-sm text-slate-500 flex gap-2"><span class="text-indigo-400 flex-shrink-0">→</span>${e}</li>`).join('');
         exWrap.classList.remove('hidden');
     } else { exWrap.classList.add('hidden'); }
 
-    // Notes
     const nWrap = document.getElementById('notesWrap');
-    const nList = document.getElementById('nodeNotes');
     if (node.notes?.length) {
-        nList.innerHTML = node.notes.map(n => `<li class="text-sm text-amber-600 flex gap-2"><span class="flex-shrink-0">⚠️</span>${n}</li>`).join('');
+        document.getElementById('nodeNotes').innerHTML =
+            node.notes.map(n => `<li class="text-sm text-amber-600 flex gap-2"><span class="flex-shrink-0">⚠️</span>${n}</li>`).join('');
         nWrap.classList.remove('hidden');
     } else { nWrap.classList.add('hidden'); }
 
-    // Tags
-    const tagsEl = document.getElementById('nodeTags');
-    tagsEl.innerHTML = (node.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+    document.getElementById('nodeTags').innerHTML =
+        (node.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
 
-    // Graph highlighting
     d3.selectAll('.node-circle').classed('selected', d => d.id === node.id);
     d3.selectAll('.graph-link').classed('related', d => d.source.id === node.id || d.target.id === node.id);
-
-    // Chat context
     document.getElementById('chatContext').textContent = `· ${node.label}`;
     enableChat();
 }
@@ -604,47 +443,38 @@ function deselectNode() {
     document.getElementById('chatContext').textContent = '';
 }
 
-// ── Expand ──
 document.getElementById('expandBtn').addEventListener('click', async () => {
     if (!selectedNodeId) return;
     const btn = document.getElementById('expandBtn');
     btn.disabled = true;
     btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="3" stroke-dasharray="30 10"/></svg> Expanding…';
-
     try {
-        const res = await fetch('/nodes/expand', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        const res = await fetch('/api/nodes/expand', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ session_id: sessionId, node_id: selectedNodeId })
         });
         const data = await res.json();
-
-        // Merge new nodes/edges
         if (data.new_nodes?.length) {
             graphData.nodes.push(...data.new_nodes);
             graphData.edges.push(...data.new_edges);
             renderGraph();
         }
-
         btn.innerHTML = '✓ Expanded';
         setTimeout(() => {
             btn.disabled = false;
             btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/></svg> Expand';
         }, 2000);
-    } catch (e) {
+    } catch {
         btn.disabled = false;
         btn.innerHTML = 'Error — retry';
     }
 });
 
-// ── Ask ──
 document.getElementById('askBtn').addEventListener('click', () => {
     chatInput.focus();
-    const label = document.getElementById('nodeLabel').textContent;
-    chatInput.placeholder = `Ask about "${label}"…`;
+    chatInput.placeholder = `Ask about "${document.getElementById('nodeLabel').textContent}"…`;
 });
 
-// ── Chat ──
 function enableChat() {
     chatInput.disabled = false;
     chatSendBtn.disabled = false;
@@ -655,18 +485,14 @@ document.getElementById('chatForm').addEventListener('submit', async e => {
     e.preventDefault();
     const q = chatInput.value.trim();
     if (!q) return;
-
     appendMsg('user', q);
     chatInput.value = '';
     chatInput.disabled = true;
     chatSendBtn.disabled = true;
-
     const thinkingId = appendMsg('assistant', '…');
-
     try {
-        const res = await fetch('/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        const res = await fetch('/api/chat', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ session_id: sessionId, question: q, node_id: selectedNodeId })
         });
         const data = await res.json();
@@ -697,7 +523,6 @@ function updateMsg(id, text) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// ── Tooltip ──
 function showTooltip(e, text) {
     const t = document.getElementById('tooltip');
     t.textContent = text;
@@ -707,7 +532,6 @@ function showTooltip(e, text) {
 }
 function hideTooltip() { document.getElementById('tooltip').classList.remove('show'); }
 
-// ── Init ──
 loadGraphData();
 window.addEventListener('resize', () => { if (graphData) renderGraph(); });
 </script>

@@ -1,6 +1,6 @@
 import pytest
 
-from app.schemas.node import NodeDetailResponse, NodeExpandRequest, NodeExpandResponse
+from app.schemas.nodes import NodeDetailResponse, NodeExpandRequest, NodeExpandResponse
 from pydantic import ValidationError
 
 

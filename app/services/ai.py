@@ -3,14 +3,14 @@ import json
 from ..core.config import settings
 
 from loguru import logger
-from google import genai
+from groq import AsyncGroq
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 
 class AIService:
     def __init__(self):
         #Set API key
-        self.client = genai.Client(api_key=settings.ai_api_key)
+        self.client = AsyncGroq(api_key=settings.ai_api_key)
         #Initialize model
         self.model = settings.ai_api_model
 
@@ -69,14 +69,23 @@ class AIService:
             "edges": [{{"source": "...", "target": "...", "relation": "...", "weight": 0.8}}]
             }}'''
 
-        response = await self.client.aio.models.generate_content(
+        raw = await self.client.chat.completions.create(
             model=self.model,
-            contents=prompt,
+            messages=[{"role": "user", "content": prompt}],
         )
+
         logger.info(f"Graph built successfully with AI | source_type={source_type} | language={language} | depth={depth}")
-        return self._parse_json(response.text) #type: ignore
+        content = raw.choices[0].message.content
+        if not content:
+            raise ValueError("Empty response from AI")
+        return self._parse_json(content)
     
 
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(min=5, max=30),
+        reraise=True,
+    )
     async def expand_node(self, topic: str, node_id: str, label: str, definition: str) -> dict:
         logger.info(f"Expanding node | topic={topic} | node_id={node_id} | label={label}")
         prompt = f'''Expand the node "{label}" in the knowledge graph about "{topic}".
@@ -89,14 +98,22 @@ class AIService:
             "new_edges": [{{"source": "{node_id}", "target": "...", "relation": "...", "weight": 0.7}}]
         }}'''
 
-        response = await self.client.aio.models.generate_content(
+        raw = await self.client.chat.completions.create(
             model=self.model,
-            contents=prompt,
+            messages=[{"role": "user", "content": prompt}],
         )
         logger.info(f"Node expanded successfully | topic={topic} | node_id={node_id} | label={label}")
-        return self._parse_json(response.text) #type: ignore
+        content = raw.choices[0].message.content
+        if not content:
+            raise ValueError("Empty response from AI")
+        return self._parse_json(content)
     
 
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(min=5, max=30),
+        reraise=True,
+    )
     async def answer(
         self,
         topic: str,
@@ -117,8 +134,11 @@ class AIService:
         
         Answer clearly and to the point. Use examples where appropriate.'''
 
-        response = await self.client.aio.models.generate_content(
+        raw = await self.client.chat.completions.create(
             model=self.model,
-            contents=prompt,
+            messages=[{"role": "user", "content": prompt}],
         )
-        return response.text #type: ignore
+        content = raw.choices[0].message.content
+        if not content:
+            raise ValueError("Empty response from AI")
+        return content

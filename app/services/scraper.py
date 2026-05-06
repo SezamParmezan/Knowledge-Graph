@@ -3,6 +3,8 @@ import trafilatura
 
 from loguru import logger
 from tenacity import retry, stop_after_attempt, wait_exponential
+from bs4 import BeautifulSoup
+
 from app.core.config import settings
 from app.core.exceptions import ScrapingError
 
@@ -13,8 +15,12 @@ class ScraperService:
             timeout=settings.scraper_timeout,
             follow_redirects=True,
             headers={
-                "User-Agent": "Mozilla/5.0 (compatible; KnowledgeGraphBot/1.0)"
-            },
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Accept-Encoding": "gzip, deflate, br",
+                "Connection": "keep-alive",
+            }
         )
 
     @retry(
@@ -37,10 +43,16 @@ class ScraperService:
             include_comments=False,
             include_tables=True,
             favor_recall=True,
+            no_fallback=False,
+            include_formatting=False,
         )
 
+        logger.debug(f"Extracted text length: {len(text) if text else 0} | preview: {text[:200] if text else 'None'}")
         if not text or len(text) < 100:
-            raise ScrapingError(url, "Failed to extract meaningful content")
+            soup = BeautifulSoup(response.text, 'html.parser')
+            for tag in soup(['script', 'style', 'nav', 'footer', 'header']):
+                tag.decompose()
+            text = soup.get_text(separator='\n', strip=True)
 
         text = self._clean(text)
         logger.info(f"Scraped {len(text)} chars from {url}")

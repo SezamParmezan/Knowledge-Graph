@@ -4,10 +4,10 @@ from fastapi import APIRouter, Depends
 
 from app.core.dependencies import get_graph_builder
 from app.services.graph_builder import GraphBuilder
-from app.schemas.node import NodeExpandRequest, NodeDetailResponse
+from app.schemas.nodes import NodeExpandRequest, NodeDetailResponse
 
 
-router = APIRouter(prefix="/nodes", tags=["nodes"])
+router = APIRouter(prefix="/api/nodes", tags=["nodes"])
 
 
 @router.get("/{session_id}/{node_id}", response_model=NodeDetailResponse)
