@@ -1,0 +1,30 @@
+{
+  "name": "knowledge-graph",
+  "version": "1.0.0",
+  "description": "An MVP of service that simulates knowledge graph of scientific term/article",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tailwindcss -i ./static/css/input.css -o ./static/css/style.css --watch",
+    "build": "tailwindcss -i ./static/css/input.css -o ./static/css/style.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SezamParmezan/Knowledge-Graph.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SezamParmezan/Knowledge-Graph/issues"
+  },
+  "homepage": "https://github.com/SezamParmezan/Knowledge-Graph#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.4",
+    "tailwindcss": "^4.2.4"
+  }
+}

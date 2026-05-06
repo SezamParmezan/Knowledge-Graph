@@ -1,7 +1,10 @@
-from google import genai
 import json
 #
 from ..core.config import settings
+
+from loguru import logger
+from google import genai
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 
 class AIService:
@@ -9,7 +12,7 @@ class AIService:
         #Set API key
         self.client = genai.Client(api_key=settings.ai_api_key)
         #Initialize model
-        self.model = "gemini-1.5-flash"
+        self.model = settings.ai_api_model
 
     
     def _parse_json(self, raw: str) -> dict:
@@ -20,11 +23,18 @@ class AIService:
         return json.loads(text)
 
 
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(min=5, max=30),
+        reraise=True,
+    )
     async def build_graph(self, text: str, language: str, depth: int, source_type: str, temperature: float = 0.2) -> dict:
         '''So, the user_input is the string, it can be single scientific term or URL link
         The depth is the number of layers of the graph, for example, if depth is 2, then we will get the direct connections of the user_input and then get the connections of those connections.
         The max_pairs is the maximum number of neigbors of each node
         '''
+
+        logger.info(f"Building graph with AI | source_type={source_type} | language={language} | depth={depth} | temperature={temperature}")
 
         if source_type == "url":
             prompt = f'''This is the text of the article: {text}. 
@@ -63,10 +73,12 @@ class AIService:
             model=self.model,
             contents=prompt,
         )
+        logger.info(f"Graph built successfully with AI | source_type={source_type} | language={language} | depth={depth}")
         return self._parse_json(response.text) #type: ignore
     
 
     async def expand_node(self, topic: str, node_id: str, label: str, definition: str) -> dict:
+        logger.info(f"Expanding node | topic={topic} | node_id={node_id} | label={label}")
         prompt = f'''Expand the node "{label}" in the knowledge graph about "{topic}".
         Node definition: {definition}
         
@@ -81,4 +93,32 @@ class AIService:
             model=self.model,
             contents=prompt,
         )
+        logger.info(f"Node expanded successfully | topic={topic} | node_id={node_id} | label={label}")
         return self._parse_json(response.text) #type: ignore
+    
+
+    async def answer(
+        self,
+        topic: str,
+        question: str,
+        rag_context: str = "",
+        node_label: str = "",
+        node_definition: str = "",
+    ) -> str:
+        node_context = ""
+        if node_label:
+            node_context = f'Context node: "{node_label}" — {node_definition}'
+
+        prompt = f'''You are an assistant on the topic "{topic}".
+        {node_context}
+        Additional context: {rag_context or "none"}
+        
+        Question: {question}
+        
+        Answer clearly and to the point. Use examples where appropriate.'''
+
+        response = await self.client.aio.models.generate_content(
+            model=self.model,
+            contents=prompt,
+        )
+        return response.text #type: ignore

@@ -1,3 +1,16 @@
 .env
 *.pyc
 __pycache__/
+node_modules/
+.vscode/
+.idea/
+*.swp
+*.swo
+logs/
+*.log
+data/
+.env.local
+.env.*.local
+.pytest_cache/
+.venv/
+venv/
