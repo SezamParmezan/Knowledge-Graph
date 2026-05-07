@@ -23,23 +23,27 @@ class ScraperService:
             }
         )
 
-    @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=2, max=10),
-        reraise=True,
-        )
+
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=10), reraise=True,)
     async def fetch(self, url: str) -> str:
         logger.info(f"Scraping: {url}")
+        html = None
+
         try:
             response = await self._client.get(url)
             response.raise_for_status()
+            html = response.text
         except httpx.HTTPStatusError as e:
-            raise ScrapingError(url, f"HTTP {e.response.status_code}")
+            if e.response.status_code == 403:
+                #playwright fallback for 403 errors
+                html = await self._fetch_with_playwright(url)
+            else:
+                raise ScrapingError(url, f"HTTP {e.response.status_code}")
         except httpx.RequestError as e:
             raise ScrapingError(url, str(e))
 
         text = trafilatura.extract(
-            response.text,
+            html,
             include_comments=False,
             include_tables=True,
             favor_recall=True,
@@ -47,16 +51,34 @@ class ScraperService:
             include_formatting=False,
         )
 
-        logger.debug(f"Extracted text length: {len(text) if text else 0} | preview: {text[:200] if text else 'None'}")
+        #BeautifulSoul fallback
         if not text or len(text) < 100:
-            soup = BeautifulSoup(response.text, 'html.parser')
+            logger.debug("trafilatura failed, trying BS4")
+            soup = BeautifulSoup(html, 'html.parser')
             for tag in soup(['script', 'style', 'nav', 'footer', 'header']):
                 tag.decompose()
             text = soup.get_text(separator='\n', strip=True)
 
+        #Plan B - playwright fallback
+        if not text or len(text) < 100:
+            logger.debug("BS4 failed, trying Playwright")
+            html = await self._fetch_with_playwright(url)
+            text = trafilatura.extract(html, favor_recall=True) or ''
+
+        #Plan C - return error
+        if not text or len(text) < 100:
+            raise ScrapingError(url, "Failed to extract meaningful content")
+
         text = self._clean(text)
+        text = self._smart_trim(text)
         logger.info(f"Scraped {len(text)} chars from {url}")
         return text
+
+
+    async def _fetch_with_playwright(self, url: str) -> str:
+        import asyncio
+        logger.info(f"Falling back to Playwright | url={url}")
+        return await asyncio.to_thread(self._playwright_sync, url)
     
 
     async def close(self) -> None:
@@ -68,6 +90,30 @@ class ScraperService:
         import re
         text = re.sub(r"\n{3,}", "\n\n", text)
         text = re.sub(r" {2,}", " ", text)
-        return text.strip()[:settings.scraper_max_chars]
+        return text.strip()
 
-    
+
+    @staticmethod
+    def _smart_trim(text: str, max_chars: int = settings.scraper_max_chars) -> str:
+        '''So the main problem is that in URL scrapping the input is too long'''
+        '''And this function is to trim the text to the max length allowed by the model, but also to keep the most important parts of the text'''
+        
+        if len(text) <= max_chars:
+            return text
+        third = max_chars // 3
+        start = text[:third]
+        mid_start = len(text) // 2 - third // 2
+        middle = text[mid_start:mid_start + third]
+        end = text[-third:]
+        return f"{start}\n\n[...]\n\n{middle}\n\n[...]\n\n{end}"
+
+    @staticmethod
+    def _playwright_sync(url: str) -> str:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(url, wait_until='networkidle', timeout=30000)
+            html = page.content()
+            browser.close()
+            return html
