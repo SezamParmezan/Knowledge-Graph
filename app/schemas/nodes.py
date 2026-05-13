@@ -3,7 +3,7 @@ from typing import Literal
 
 class NodeDetailResponse(BaseModel):
     '''Response model for node details.'''
-    node_id: str
+    id: str
     label: str
     definition: str
     importance: Literal["core", "major", "minor"]

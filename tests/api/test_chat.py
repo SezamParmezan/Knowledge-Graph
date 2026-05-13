@@ -53,7 +53,7 @@ def mock_dependencies():
 
 def test_chat_with_session_only(client, mock_dependencies):
     """Test chat endpoint with only session_id"""
-    response = client.post("/chat", json={
+    response = client.post("/api/chat", json={
         "session_id": "test-session",
         "question": "What is AI?",
         "node_id": None
@@ -67,7 +67,7 @@ def test_chat_with_session_only(client, mock_dependencies):
 
 def test_chat_with_session_and_node(client, mock_dependencies):
     """Test chat endpoint with session_id and node_id"""
-    response = client.post("/chat", json={
+    response = client.post("/api/chat", json={
         "session_id": "test-session",
         "question": "Tell me more about this node?",
         "node_id": "node-1"
@@ -80,7 +80,7 @@ def test_chat_with_session_and_node(client, mock_dependencies):
 
 def test_chat_uses_rag_context(client, mock_dependencies):
     """Test that chat endpoint uses RAG context"""
-    response = client.post("/chat", json={
+    response = client.post("/api/chat", json={
         "session_id": "test-session",
         "question": "What is the definition?",
         "node_id": None
@@ -93,7 +93,7 @@ def test_chat_uses_rag_context(client, mock_dependencies):
 
 def test_chat_uses_ai_service(client, mock_dependencies):
     """Test that chat endpoint uses AI service"""
-    response = client.post("/chat", json={
+    response = client.post("/api/chat", json={
         "session_id": "test-session",
         "question": "Explain this concept",
         "node_id": None
@@ -106,7 +106,7 @@ def test_chat_uses_ai_service(client, mock_dependencies):
 
 def test_chat_missing_session_id(client):
     """Test chat endpoint with missing session_id"""
-    response = client.post("/chat", json={
+    response = client.post("/api/chat", json={
         "question": "What is AI?"
     })
     
@@ -116,7 +116,7 @@ def test_chat_missing_session_id(client):
 
 def test_chat_missing_question(client):
     """Test chat endpoint with missing question"""
-    response = client.post("/chat", json={
+    response = client.post("/api/chat", json={
         "session_id": "test-session"
     })
     
@@ -126,7 +126,7 @@ def test_chat_missing_question(client):
 
 def test_chat_empty_question(client, mock_dependencies):
     """Test chat with empty question string"""
-    response = client.post("/chat", json={
+    response = client.post("/api/chat", json={
         "session_id": "test-session",
         "question": "",
         "node_id": None
@@ -144,7 +144,7 @@ def test_chat_invalid_session_id(client, mock_dependencies):
         side_effect=SessionNotFoundError("invalid-session")
     )
     
-    response = client.post("/chat", json={
+    response = client.post("/api/chat", json={
         "session_id": "invalid-session",
         "question": "What is AI?",
         "node_id": None
@@ -161,7 +161,7 @@ def test_chat_with_invalid_node_id(client, mock_dependencies):
         side_effect=NodeNotFoundError("invalid-node")
     )
     
-    response = client.post("/chat", json={
+    response = client.post("/api/chat", json={
         "session_id": "test-session",
         "question": "What is this?",
         "node_id": "invalid-node"
@@ -173,7 +173,7 @@ def test_chat_with_invalid_node_id(client, mock_dependencies):
 
 def test_chat_response_model(client, mock_dependencies):
     """Test that chat response matches ChatResponse schema"""
-    response = client.post("/chat", json={
+    response = client.post("/api/chat", json={
         "session_id": "test-session",
         "question": "Test question?",
         "node_id": None

@@ -30,8 +30,8 @@ async def test_fetch_success(scraper_service):
 async def test_fetch_http_error(scraper_service):
     with patch.object(scraper_service._client, 'get') as mock_get:
         mock_response = MagicMock()
-        mock_response.status_code = 404
-        mock_get.return_value.raise_for_status.side_effect = Exception("404")
+        mock_response.raise_for_status = MagicMock(side_effect=Exception("404"))
+        mock_get.return_value = mock_response
         
         with pytest.raises(ScrapingError):
             await scraper_service.fetch("http://example.com/notfound")

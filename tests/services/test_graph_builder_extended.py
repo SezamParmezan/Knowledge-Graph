@@ -42,7 +42,7 @@ class TestGraphBuilderBuildMethod:
         """Test that build stores session data correctly"""
         test_graph = {
             "topic": "Test Topic",
-            "nodes": [{"id": "1", "label": "Node"}],
+            "nodes": [{"id": "1", "label": "Node", "definition": "Test def", "importance": "core", "examples": [], "notes": [], "tags": []}],
             "edges": []
         }
         mock_ai_service.build_graph.return_value = test_graph
@@ -105,7 +105,7 @@ class TestGraphBuilderExpandNode:
         """Test that expand_node adds new nodes to graph"""
         initial_graph = {
             "topic": "Test",
-            "nodes": [{"id": "1", "label": "Node 1"}],
+            "nodes": [{"id": "1", "label": "Node 1", "definition": "Test definition"}],
             "edges": []
         }
         

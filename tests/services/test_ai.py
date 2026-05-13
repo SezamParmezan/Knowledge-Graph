@@ -6,7 +6,7 @@ from app.services.ai import AIService
 
 @pytest.fixture
 def ai_service():
-    with patch('app.services.ai.genai.Client'):
+    with patch('app.services.ai.AsyncGroq'):
         service = AIService()
         service.client = MagicMock()
         return service
@@ -36,12 +36,13 @@ def test_parse_json_with_whitespace():
 @pytest.mark.asyncio
 async def test_build_graph_url_source(ai_service):
     mock_response = MagicMock()
-    mock_response.text = json.dumps({
+    mock_response.choices = [MagicMock()]
+    mock_response.choices[0].message.content = json.dumps({
         "topic": "Test",
         "nodes": [{"id": "1", "label": "Node1"}],
         "edges": []
     })
-    ai_service.client.aio.models.generate_content = AsyncMock(return_value=mock_response)
+    ai_service.client.chat.completions.create = AsyncMock(return_value=mock_response)
     
     result = await ai_service.build_graph("Test text", "en", 2, "url")
     assert "topic" in result
@@ -51,12 +52,13 @@ async def test_build_graph_url_source(ai_service):
 @pytest.mark.asyncio
 async def test_build_graph_term_source(ai_service):
     mock_response = MagicMock()
-    mock_response.text = json.dumps({
+    mock_response.choices = [MagicMock()]
+    mock_response.choices[0].message.content = json.dumps({
         "topic": "Science",
         "nodes": [],
         "edges": []
     })
-    ai_service.client.aio.models.generate_content = AsyncMock(return_value=mock_response)
+    ai_service.client.chat.completions.create = AsyncMock(return_value=mock_response)
     
     result = await ai_service.build_graph("Science", "en", 1, "term", 0.5)
     assert isinstance(result, dict)

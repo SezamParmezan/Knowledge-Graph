@@ -15,6 +15,7 @@
             font-family: 'Outfit', sans-serif;
             background: #f0f4ff;
             overflow-x: hidden;
+            font-size: 17px;
         }
 
         /* ── Gradient mesh background ── */
@@ -31,7 +32,6 @@
             pointer-events: none;
         }
 
-        /* Subtle animated blobs */
         .blob {
             position: fixed;
             border-radius: 50%;
@@ -76,13 +76,6 @@
             background-clip: text;
         }
 
-        .gradient-text-warm {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
         /* ── Gradient button ── */
         .btn-primary {
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
@@ -102,6 +95,7 @@
             border: 1.5px solid rgba(203,213,225,0.8);
             transition: all 0.2s ease;
             font-family: 'Outfit', sans-serif;
+            font-size: 17px;
         }
         .input-field:focus {
             outline: none;
@@ -125,7 +119,6 @@
             pointer-events: auto;
         }
 
-        /* Scroll snap */
         .scroll-container {
             scroll-snap-type: y proximity;
             overflow-y: scroll;
@@ -154,33 +147,33 @@
 
         @keyframes nodeFloat {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
+            50% { transform: translateY(-5px); }
         }
 
         .graph-edge {
-            stroke-dasharray: 4 4;
+            stroke-dasharray: 5 5;
             animation: edgeDash 3s linear infinite;
         }
         @keyframes edgeDash {
-            to { stroke-dashoffset: -24; }
+            to { stroke-dashoffset: -30; }
         }
 
         /* ── Badge ── */
         .badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
+            gap: 8px;
+            padding: 8px 18px;
             background: rgba(99,102,241,0.08);
             border: 1px solid rgba(99,102,241,0.2);
             border-radius: 100px;
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 500;
             color: #4f46e5;
         }
 
         .badge-dot {
-            width: 6px; height: 6px;
+            width: 8px; height: 8px;
             border-radius: 50%;
             background: #10b981;
             animation: badgePulse 2s infinite;
@@ -188,7 +181,7 @@
 
         @keyframes badgePulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
-            50% { box-shadow: 0 0 0 4px rgba(16,185,129,0); }
+            50% { box-shadow: 0 0 0 5px rgba(16,185,129,0); }
         }
 
         /* ── Tab toggle ── */
@@ -196,15 +189,15 @@
             background: rgba(241,245,249,0.8);
             border: 1px solid rgba(203,213,225,0.5);
             border-radius: 100px;
-            padding: 4px;
+            padding: 5px;
             display: inline-flex;
             position: relative;
         }
 
         .tab-indicator {
             position: absolute;
-            top: 4px; bottom: 4px; left: 4px;
-            width: calc(50% - 4px);
+            top: 5px; bottom: 5px; left: 5px;
+            width: calc(50% - 5px);
             background: white;
             border-radius: 100px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -214,10 +207,10 @@
         .tab-btn {
             position: relative;
             z-index: 1;
-            padding: 10px 28px;
+            padding: 13px 34px;
             border-radius: 100px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 16px;
             color: #64748b;
             cursor: pointer;
             transition: color 0.2s;
@@ -243,11 +236,11 @@
         }
 
         .feature-icon-wrap {
-            width: 48px; height: 48px;
-            border-radius: 14px;
+            width: 58px; height: 58px;
+            border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
-            margin-bottom: 16px;
-            font-size: 22px;
+            margin-bottom: 18px;
+            font-size: 28px;
         }
 
         /* ── Scroll hint ── */
@@ -288,13 +281,12 @@
         select {
             -webkit-appearance: none;
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 36px !important;
+            background-position: right 16px center;
+            padding-right: 42px !important;
         }
 
-        /* Scroll snap container */
         html {
             scroll-behavior: smooth;
         }
@@ -312,10 +304,10 @@
 
     <!-- Navigation -->
     <nav class="sticky top-0 z-50 glass-nav">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl btn-primary flex items-center justify-center flex-shrink-0">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="max-w-6xl mx-auto px-7 py-5 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-11 h-11 rounded-2xl btn-primary flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="3" stroke-width="2"/>
                         <circle cx="4" cy="6" r="2" stroke-width="2"/>
                         <circle cx="20" cy="6" r="2" stroke-width="2"/>
@@ -327,14 +319,14 @@
                         <line x1="12" y1="12" x2="20" y2="18" stroke-width="1.5"/>
                     </svg>
                 </div>
-                <span class="text-xl font-bold text-slate-800" style="font-family:'Outfit',sans-serif; letter-spacing:-0.3px;">KnowledgeGraph</span>
+                <span class="text-2xl font-bold text-slate-800" style="font-family:'Outfit',sans-serif; letter-spacing:-0.3px;">KnowledgeGraph</span>
             </div>
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-5">
                 <span class="badge hidden sm:inline-flex">
                     <span class="badge-dot"></span>
                     llama-3.3-70b-versatile
                 </span>
-                <a href="#form-section" class="btn-primary text-sm font-semibold px-5 py-2.5 rounded-xl">
+                <a href="#form-section" class="btn-primary text-base font-semibold px-6 py-3 rounded-xl">
                     Get Started
                 </a>
             </div>
@@ -342,44 +334,44 @@
     </nav>
 
     <!-- Hero -->
-    <section class="snap-section min-h-screen flex flex-col justify-center max-w-6xl mx-auto px-6 py-20">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <section class="snap-section min-h-screen flex flex-col justify-center max-w-6xl mx-auto px-7 py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
 
             <!-- Left -->
             <div>
-                <div class="badge mb-6 anim-1">
+                <div class="badge mb-7 anim-1">
                     <span class="badge-dot"></span>
                     AI-Powered Knowledge Exploration
                 </div>
 
-                <h1 class="hero-title text-5xl md:text-6xl font-normal text-slate-900 mb-6 anim-2">
+                <h1 class="hero-title text-6xl md:text-7xl font-normal text-slate-900 mb-7 anim-2">
                     Visualize any<br>
                     <span class="gradient-text italic">knowledge</span><br>
                     as a graph
                 </h1>
 
-                <p class="text-lg text-slate-500 mb-10 leading-relaxed max-w-md anim-3" style="font-weight:300;">
+                <p class="text-xl text-slate-500 mb-11 leading-relaxed max-w-md anim-3" style="font-weight:300;">
                     Drop a URL or a term — get an interactive map of concepts, relationships, and insights. Then click, explore, and ask.
                 </p>
 
-                <div class="flex flex-wrap gap-6 mb-12 anim-4">
-                    <div class="flex items-center gap-2 text-slate-600 text-sm font-medium">
-                        <span class="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-xs">✓</span>
+                <div class="flex flex-wrap gap-7 mb-14 anim-4">
+                    <div class="flex items-center gap-3 text-slate-600 text-base font-medium">
+                        <span class="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-sm">✓</span>
                         Real-time graph
                     </div>
-                    <div class="flex items-center gap-2 text-slate-600 text-sm font-medium">
-                        <span class="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-xs">✓</span>
+                    <div class="flex items-center gap-3 text-slate-600 text-base font-medium">
+                        <span class="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-sm">✓</span>
                         Expandable nodes
                     </div>
-                    <div class="flex items-center gap-2 text-slate-600 text-sm font-medium">
-                        <span class="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-xs">✓</span>
+                    <div class="flex items-center gap-3 text-slate-600 text-base font-medium">
+                        <span class="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-sm">✓</span>
                         AI chat context
                     </div>
                 </div>
 
-                <a href="#form-section" class="btn-primary inline-flex items-center gap-2 px-8 py-4 rounded-2xl text-base font-semibold anim-4">
+                <a href="#form-section" class="btn-primary inline-flex items-center gap-3 px-9 py-5 rounded-2xl text-lg font-semibold anim-4">
                     Build your graph
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
                 </a>
@@ -387,8 +379,7 @@
 
             <!-- Right — animated graph -->
             <div class="hidden lg:flex justify-center items-center anim-3">
-                <div class="relative w-96 h-96">
-                    <!-- Glow rings -->
+                <div class="relative w-[440px] h-[440px]">
                     <div class="absolute inset-16 rounded-full bg-indigo-200 opacity-20 animate-ping" style="animation-duration:3s;"></div>
                     <div class="absolute inset-24 rounded-full bg-violet-200 opacity-30 animate-ping" style="animation-duration:4s; animation-delay:1s;"></div>
 
@@ -408,7 +399,6 @@
                             </filter>
                         </defs>
 
-                        <!-- Edges -->
                         <line class="graph-edge" x1="150" y1="150" x2="80" y2="80" stroke="#a5b4fc" stroke-width="1.5" opacity="0.5"/>
                         <line class="graph-edge" x1="150" y1="150" x2="220" y2="80" stroke="#a5b4fc" stroke-width="1.5" opacity="0.5" style="animation-delay:-1s"/>
                         <line class="graph-edge" x1="150" y1="150" x2="80" y2="220" stroke="#a5b4fc" stroke-width="1.5" opacity="0.5" style="animation-delay:-2s"/>
@@ -418,41 +408,38 @@
                         <line class="graph-edge" x1="80" y1="80" x2="220" y2="80" stroke="#ddd6fe" stroke-width="1" opacity="0.3" style="animation-delay:-0.8s"/>
                         <line class="graph-edge" x1="80" y1="220" x2="220" y2="220" stroke="#ddd6fe" stroke-width="1" opacity="0.3" style="animation-delay:-1.8s"/>
 
-                        <!-- Satellite nodes -->
                         <g class="graph-node" filter="url(#glow)">
-                            <circle cx="80" cy="80" r="14" fill="url(#nodeGrad2)" opacity="0.85"/>
-                            <circle cx="80" cy="80" r="14" fill="none" stroke="white" stroke-width="1.5" opacity="0.4"/>
+                            <circle cx="80" cy="80" r="16" fill="url(#nodeGrad2)" opacity="0.85"/>
+                            <circle cx="80" cy="80" r="16" fill="none" stroke="white" stroke-width="1.5" opacity="0.4"/>
                         </g>
                         <g class="graph-node" filter="url(#glow)">
-                            <circle cx="220" cy="80" r="14" fill="url(#nodeGrad2)" opacity="0.85"/>
-                            <circle cx="220" cy="80" r="14" fill="none" stroke="white" stroke-width="1.5" opacity="0.4"/>
+                            <circle cx="220" cy="80" r="16" fill="url(#nodeGrad2)" opacity="0.85"/>
+                            <circle cx="220" cy="80" r="16" fill="none" stroke="white" stroke-width="1.5" opacity="0.4"/>
                         </g>
                         <g class="graph-node" filter="url(#glow)">
-                            <circle cx="80" cy="220" r="12" fill="url(#nodeGrad2)" opacity="0.75"/>
+                            <circle cx="80" cy="220" r="14" fill="url(#nodeGrad2)" opacity="0.75"/>
                         </g>
                         <g class="graph-node" filter="url(#glow)">
-                            <circle cx="220" cy="220" r="12" fill="url(#nodeGrad2)" opacity="0.75"/>
+                            <circle cx="220" cy="220" r="14" fill="url(#nodeGrad2)" opacity="0.75"/>
                         </g>
                         <g class="graph-node">
-                            <circle cx="150" cy="50" r="10" fill="#c4b5fd" opacity="0.7"/>
+                            <circle cx="150" cy="50" r="12" fill="#c4b5fd" opacity="0.7"/>
                         </g>
                         <g class="graph-node">
-                            <circle cx="150" cy="250" r="10" fill="#c4b5fd" opacity="0.7"/>
+                            <circle cx="150" cy="250" r="12" fill="#c4b5fd" opacity="0.7"/>
                         </g>
 
-                        <!-- Center node -->
                         <g filter="url(#glow)">
-                            <circle cx="150" cy="150" r="26" fill="url(#nodeGrad1)"/>
-                            <circle cx="150" cy="150" r="26" fill="none" stroke="white" stroke-width="2" opacity="0.5"/>
-                            <circle cx="150" cy="150" r="32" fill="none" stroke="#818cf8" stroke-width="1" opacity="0.3" stroke-dasharray="4 4">
+                            <circle cx="150" cy="150" r="30" fill="url(#nodeGrad1)"/>
+                            <circle cx="150" cy="150" r="30" fill="none" stroke="white" stroke-width="2" opacity="0.5"/>
+                            <circle cx="150" cy="150" r="38" fill="none" stroke="#818cf8" stroke-width="1" opacity="0.3" stroke-dasharray="5 5">
                                 <animateTransform attributeName="transform" type="rotate" from="0 150 150" to="360 150 150" dur="8s" repeatCount="indefinite"/>
                             </circle>
                         </g>
 
-                        <!-- Labels -->
-                        <text x="80" y="84" text-anchor="middle" dominant-baseline="central" fill="white" font-size="9" font-family="Outfit,sans-serif" font-weight="600" opacity="0.9">Core</text>
-                        <text x="220" y="84" text-anchor="middle" dominant-baseline="central" fill="white" font-size="9" font-family="Outfit,sans-serif" font-weight="600" opacity="0.9">RAG</text>
-                        <text x="150" y="154" text-anchor="middle" dominant-baseline="central" fill="white" font-size="11" font-family="Outfit,sans-serif" font-weight="700">Topic</text>
+                        <text x="80" y="84" text-anchor="middle" dominant-baseline="central" fill="white" font-size="10" font-family="Outfit,sans-serif" font-weight="600" opacity="0.9">Core</text>
+                        <text x="220" y="84" text-anchor="middle" dominant-baseline="central" fill="white" font-size="10" font-family="Outfit,sans-serif" font-weight="600" opacity="0.9">RAG</text>
+                        <text x="150" y="154" text-anchor="middle" dominant-baseline="central" fill="white" font-size="13" font-family="Outfit,sans-serif" font-weight="700">Topic</text>
                     </svg>
                 </div>
             </div>
@@ -460,8 +447,8 @@
 
         <!-- Scroll hint -->
         <div class="flex flex-col items-center gap-2 mt-16 scroll-hint">
-            <span class="text-xs text-slate-400 tracking-widest uppercase">Scroll to explore</span>
-            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span class="text-sm text-slate-400 tracking-widest uppercase">Scroll to explore</span>
+            <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
         </div>
@@ -469,15 +456,15 @@
 
     <!-- Form section -->
     <section id="form-section" class="snap-section max-w-2xl mx-auto px-6 py-24">
-        <div class="form-card glass rounded-3xl p-8 md:p-12 shadow-2xl" id="formCard">
+        <div class="form-card glass rounded-3xl p-10 md:p-14 shadow-2xl" id="formCard">
 
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-slate-800 mb-2" style="font-family:'DM Serif Display',serif;">Get Started</h2>
-                <p class="text-slate-500">Enter a term or paste an article URL</p>
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-bold text-slate-800 mb-3" style="font-family:'DM Serif Display',serif;">Get Started</h2>
+                <p class="text-slate-500 text-lg">Enter a term or paste an article URL</p>
             </div>
 
             <!-- Tabs -->
-            <div class="flex justify-center mb-8">
+            <div class="flex justify-center mb-9">
                 <div class="tab-track">
                     <div class="tab-indicator" id="tabIndicator"></div>
                     <button class="tab-btn active" id="urlTab">📖 URL Article</button>
@@ -486,17 +473,17 @@
             </div>
 
             <!-- URL Form -->
-            <form id="urlForm" class="space-y-5">
+            <form id="urlForm" class="space-y-6">
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">Article URL</label>
+                    <label class="block text-base font-semibold text-slate-700 mb-2.5">Article URL</label>
                     <input type="url" id="urlInput" placeholder="https://example.com/article" required
-                        class="input-field w-full px-4 py-3.5 rounded-xl text-slate-800 placeholder-slate-400"/>
-                    <p class="text-xs text-slate-400 mt-1.5">Paste any article URL to analyze its content</p>
+                        class="input-field w-full px-5 py-4 rounded-xl text-slate-800 placeholder-slate-400"/>
+                    <p class="text-sm text-slate-400 mt-2">Paste any article URL to analyze its content</p>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-5">
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Language</label>
-                        <select id="urlLanguage" class="input-field w-full px-4 py-3.5 rounded-xl text-slate-800">
+                        <label class="block text-base font-semibold text-slate-700 mb-2.5">Language</label>
+                        <select id="urlLanguage" class="input-field w-full px-5 py-4 rounded-xl text-slate-800">
                             <option value="en">English</option>
                             <option value="ru">Russian</option>
                             <option value="es">Spanish</option>
@@ -504,15 +491,15 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Graph Depth</label>
-                        <select id="urlDepth" class="input-field w-full px-4 py-3.5 rounded-xl text-slate-800">
+                        <label class="block text-base font-semibold text-slate-700 mb-2.5">Graph Depth</label>
+                        <select id="urlDepth" class="input-field w-full px-5 py-4 rounded-xl text-slate-800">
                             <option value="1">Level 1 — Quick</option>
                             <option value="2" selected>Level 2 — Detailed</option>
                             <option value="3">Level 3 — Deep</option>
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="btn-primary w-full py-4 rounded-2xl font-semibold text-base flex items-center justify-center gap-2 mt-2">
+                <button type="submit" class="btn-primary w-full py-5 rounded-2xl font-semibold text-lg flex items-center justify-center gap-3 mt-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
@@ -521,17 +508,17 @@
             </form>
 
             <!-- Term Form -->
-            <form id="termForm" class="space-y-5 hidden">
+            <form id="termForm" class="space-y-6 hidden">
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">Search Term</label>
+                    <label class="block text-base font-semibold text-slate-700 mb-2.5">Search Term</label>
                     <input type="text" id="termInput" placeholder="e.g., quantum computing, CRISPR, black holes" required
-                        class="input-field w-full px-4 py-3.5 rounded-xl text-slate-800 placeholder-slate-400"/>
-                    <p class="text-xs text-slate-400 mt-1.5">Any scientific term or concept</p>
+                        class="input-field w-full px-5 py-4 rounded-xl text-slate-800 placeholder-slate-400"/>
+                    <p class="text-sm text-slate-400 mt-2">Any scientific term or concept</p>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-5">
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Language</label>
-                        <select id="termLanguage" class="input-field w-full px-4 py-3.5 rounded-xl text-slate-800">
+                        <label class="block text-base font-semibold text-slate-700 mb-2.5">Language</label>
+                        <select id="termLanguage" class="input-field w-full px-5 py-4 rounded-xl text-slate-800">
                             <option value="en">English</option>
                             <option value="ru">Russian</option>
                             <option value="es">Spanish</option>
@@ -539,15 +526,15 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Graph Depth</label>
-                        <select id="termDepth" class="input-field w-full px-4 py-3.5 rounded-xl text-slate-800">
+                        <label class="block text-base font-semibold text-slate-700 mb-2.5">Graph Depth</label>
+                        <select id="termDepth" class="input-field w-full px-5 py-4 rounded-xl text-slate-800">
                             <option value="1">Level 1 — Quick</option>
                             <option value="2" selected>Level 2 — Detailed</option>
                             <option value="3">Level 3 — Deep</option>
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="btn-primary w-full py-4 rounded-2xl font-semibold text-base flex items-center justify-center gap-2 mt-2">
+                <button type="submit" class="btn-primary w-full py-5 rounded-2xl font-semibold text-lg flex items-center justify-center gap-3 mt-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
@@ -556,58 +543,58 @@
             </form>
 
             <!-- Loading -->
-            <div id="loadingState" class="hidden mt-6 space-y-4">
-                <div class="flex justify-center gap-2 py-4">
-                    <div class="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-bounce" style="animation-delay:0s"></div>
-                    <div class="w-2.5 h-2.5 rounded-full bg-violet-400 animate-bounce" style="animation-delay:0.15s"></div>
-                    <div class="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-bounce" style="animation-delay:0.3s"></div>
+            <div id="loadingState" class="hidden mt-7 space-y-4">
+                <div class="flex justify-center gap-3 py-4">
+                    <div class="w-3 h-3 rounded-full bg-indigo-400 animate-bounce" style="animation-delay:0s"></div>
+                    <div class="w-3 h-3 rounded-full bg-violet-400 animate-bounce" style="animation-delay:0.15s"></div>
+                    <div class="w-3 h-3 rounded-full bg-indigo-400 animate-bounce" style="animation-delay:0.3s"></div>
                 </div>
-                <p class="text-center text-slate-600 text-sm font-medium" id="loadingStatus"></p>
-                <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                <p class="text-center text-slate-600 text-base font-medium" id="loadingStatus"></p>
+                <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
                     <div class="progress-fill h-full rounded-full" id="progressBar" style="width:0%"></div>
                 </div>
             </div>
 
             <!-- Error -->
-            <div id="errorState" class="hidden mt-4 bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3">
-                <span class="text-red-500 text-lg flex-shrink-0">⚠️</span>
+            <div id="errorState" class="hidden mt-5 bg-red-50 border border-red-200 rounded-xl p-5 flex items-start gap-4">
+                <span class="text-red-500 text-xl flex-shrink-0">⚠️</span>
                 <div>
-                    <p class="font-semibold text-red-800 text-sm" id="errorMessage"></p>
-                    <p class="text-xs text-red-600 mt-0.5">Please try again with a different input.</p>
+                    <p class="font-semibold text-red-800 text-base" id="errorMessage"></p>
+                    <p class="text-sm text-red-600 mt-1">Please try again with a different input.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Features -->
-    <section class="snap-section max-w-5xl mx-auto px-6 py-24">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-slate-800 mb-3" style="font-family:'DM Serif Display',serif;">Why knowledge graphs?</h2>
-            <p class="text-slate-500 max-w-md mx-auto">See structure, not just text. Understand relationships, not just facts.</p>
+    <section class="snap-section max-w-5xl mx-auto px-7 py-24">
+        <div class="text-center mb-14">
+            <h2 class="text-4xl font-bold text-slate-800 mb-4" style="font-family:'DM Serif Display',serif;">Why knowledge graphs?</h2>
+            <p class="text-slate-500 text-lg max-w-md mx-auto">See structure, not just text. Understand relationships, not just facts.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="feature-card rounded-2xl p-7">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
+            <div class="feature-card rounded-2xl p-8">
                 <div class="feature-icon-wrap bg-indigo-50">🕸️</div>
-                <h3 class="font-bold text-slate-800 mb-2">Visual Structure</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">See how concepts connect at a glance instead of reading paragraphs to find relationships.</p>
+                <h3 class="font-bold text-slate-800 text-xl mb-3">Visual Structure</h3>
+                <p class="text-slate-500 text-base leading-relaxed">See how concepts connect at a glance instead of reading paragraphs to find relationships.</p>
             </div>
-            <div class="feature-card rounded-2xl p-7">
+            <div class="feature-card rounded-2xl p-8">
                 <div class="feature-icon-wrap bg-violet-50">⚡</div>
-                <h3 class="font-bold text-slate-800 mb-2">Instant Insight</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">From URL or term to full knowledge graph in seconds. Powered by Gemini 1.5 Flash.</p>
+                <h3 class="font-bold text-slate-800 text-xl mb-3">Instant Insight</h3>
+                <p class="text-slate-500 text-base leading-relaxed">From URL or term to full knowledge graph in seconds. Powered by Gemini 1.5 Flash.</p>
             </div>
-            <div class="feature-card rounded-2xl p-7">
+            <div class="feature-card rounded-2xl p-8">
                 <div class="feature-icon-wrap bg-emerald-50">💬</div>
-                <h3 class="font-bold text-slate-800 mb-2">Ask Anything</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">Click a node and ask the AI about it. Answers are grounded in the original source.</p>
+                <h3 class="font-bold text-slate-800 text-xl mb-3">Ask Anything</h3>
+                <p class="text-slate-500 text-base leading-relaxed">Click a node and ask the AI about it. Answers are grounded in the original source.</p>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-white/60 py-8 px-6 text-center text-sm text-slate-400">
-        <span>KnowledgeGraph © 2025 &nbsp;·&nbsp; Built with FastAPI, Gemini, ChromaDB</span>
+    <footer class="border-t border-white/60 py-9 px-6 text-center text-base text-slate-400">
+        <span>KnowledgeGraph © 2026 &nbsp;·&nbsp; Built with FastAPI, Groq, ChromaDB</span>
     </footer>
 
 </div>
@@ -620,7 +607,6 @@ const formSection = document.getElementById('form-section');
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            // Small delay for drama
             setTimeout(() => formCard.classList.add('visible'), 100);
         }
     });
@@ -658,7 +644,6 @@ async function submitForm(data) {
     const progressBar = document.getElementById('progressBar');
     const loadingStatus = document.getElementById('loadingStatus');
 
-    // Disable forms
     document.querySelectorAll('form button[type=submit]').forEach(b => b.disabled = true);
     loadingState.classList.remove('hidden');
     errorState.classList.add('hidden');

@@ -69,7 +69,7 @@ def test_build_graph_with_term_input(client, mock_dependencies):
         "meta": {"source_type": "term"}
     })
     
-    response = client.post("/graph/build", json={
+    response = client.post("/api/graph/build", json={
         "input": "artificial intelligence",
         "language": "en",
         "depth": 2,
@@ -103,7 +103,7 @@ def test_build_graph_with_url_input(client, mock_dependencies):
         "meta": {"source_type": "url"}
     })
     
-    response = client.post("/graph/build", json={
+    response = client.post("/api/graph/build", json={
         "input": "https://example.com/article",
         "language": "en",
         "depth": 2,
@@ -125,7 +125,7 @@ def test_get_graph_session(client, mock_dependencies):
     }
     mock_dependencies['builder'].get_session = MagicMock(return_value=session_data)
     
-    response = client.get("/graph/test-session-123")
+    response = client.get("/api/graph/test-session-123")
     
     assert response.status_code == 200
     data = response.json()
@@ -140,7 +140,7 @@ def test_get_graph_invalid_session(client, mock_dependencies):
         side_effect=SessionNotFoundError("test-session")
     )
     
-    response = client.get("/graph/invalid-session")
+    response = client.get("/api/graph/invalid-session")
     
     # Should return 404 or appropriate error
     assert response.status_code >= 400
@@ -148,7 +148,7 @@ def test_get_graph_invalid_session(client, mock_dependencies):
 
 def test_build_graph_missing_required_fields(client):
     """Test that build_graph validates required fields"""
-    response = client.post("/graph/build", json={
+    response = client.post("/api/graph/build", json={
         "input": "test"
         # Missing language, depth, is_url
     })
@@ -169,7 +169,7 @@ def test_build_graph_different_languages(client, mock_dependencies):
     
     languages = ["en", "es", "fr", "de"]
     for lang in languages:
-        response = client.post("/graph/build", json={
+        response = client.post("/api/graph/build", json={
             "input": "test term",
             "language": lang,
             "depth": 2,
@@ -190,7 +190,7 @@ def test_build_graph_different_depths(client, mock_dependencies):
     
     depths = [1, 2, 3]
     for depth in depths:
-        response = client.post("/graph/build", json={
+        response = client.post("/api/graph/build", json={
             "input": "test term",
             "language": "en",
             "depth": depth,

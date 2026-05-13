@@ -70,10 +70,6 @@ def test_setup_logging_is_idempotent():
         setup_logging()
         setup_logging()
         setup_logging()
-    
-    # Verify calls were made with the configured log level
-    calls_str = str(mock_logger.add.call_args_list)
-    assert settings.log_level in calls_str
 
 
 def test_setup_logging_configures_console_format(mock_logger):

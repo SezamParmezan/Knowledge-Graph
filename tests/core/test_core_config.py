@@ -2,7 +2,7 @@ from app.core.config import Settings
 
 
 def test_settings_default_values():
-    settings = Settings()
+    settings = Settings(_env_file=None)
 
     assert settings.app_name == "KnowledgeGraph"
     assert settings.port == 8000
